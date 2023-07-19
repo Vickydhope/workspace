@@ -19,19 +19,21 @@ class CategoryRepositoryImpl implements CategoryRepository {
       final httpResponse = await _categoryApiService.getCategories();
 
       if (httpResponse.response.statusCode == HttpStatus.ok) {
-        return DataSuccess(httpResponse.data);
+        return DataSuccess(httpResponse.data?.categories ?? []);
       } else {
         return DataFailed(
           DioException(
-            requestOptions: httpResponse.response.requestOptions,
-            response: httpResponse.response,
-            type: DioExceptionType.badResponse,
-            error: httpResponse.response.statusMessage,
-          ),
+              requestOptions: httpResponse.response.requestOptions,
+              response: httpResponse.response,
+              type: DioExceptionType.badResponse,
+              error: httpResponse.response.statusMessage),
         );
       }
     } on DioException catch (e) {
-      return DataFailed(DioException(requestOptions: e.requestOptions,error: e.error,message: "No Internet Connection!"));
+      return DataFailed(DioException(
+          requestOptions: e.requestOptions,
+          error: e.error,
+          message: "No Internet Connection!"));
     }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:workspace/features/dashboard/data/model/category.dart';
 
 class CategoryEntity extends Equatable {
   final String? idCategory;

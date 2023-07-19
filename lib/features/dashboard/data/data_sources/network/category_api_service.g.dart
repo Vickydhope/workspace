@@ -19,13 +19,13 @@ class _CategoryApiService implements CategoryApiService {
   String? baseUrl;
 
   @override
-  Future<HttpResponse<List<CategoryModel>>> getCategories() async {
+  Future<HttpResponse<CategoryResponseModel?>> getCategories() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<HttpResponse<List<CategoryModel>>>(Options(
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>?>(
+        _setStreamType<HttpResponse<CategoryResponseModel>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -41,11 +41,9 @@ class _CategoryApiService implements CategoryApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-
-    List<CategoryModel> value =
-        _result.data!['categories'].map<CategoryModel>((dynamic i) {
-      return CategoryModel.fromJson(i as Map<String, dynamic>);
-    }).toList();
+    final value = _result.data == null
+        ? null
+        : CategoryResponseModel.fromJson(_result.data!);
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;
   }

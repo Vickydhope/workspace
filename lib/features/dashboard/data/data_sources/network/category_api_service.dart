@@ -11,5 +11,5 @@ abstract class CategoryApiService {
   factory CategoryApiService({required Dio dio}) => _CategoryApiService(dio);
 
   @GET(BaseUrlConfig.endpointCategories)
-  Future<HttpResponse<List<CategoryModel>>> getCategories();
+  Future<HttpResponse<CategoryResponseModel?>> getCategories();
 }
