@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:workspace/core/resources/data_state.dart';
-import 'package:workspace/features/dashboard/data/model/category.dart';
 import 'package:dio/dio.dart';
 import 'package:workspace/features/dashboard/domain/use_cases/get_categories.dart';
 
@@ -28,8 +27,9 @@ class RemoteCategoryBloc
 
   FutureOr<void> onGetCategories(
       GetCategories event, Emitter<RemoteCategoryState> emit) async {
+    emit(const RemoteCategoriesLoading());
+    await Future.delayed(const Duration(seconds: 2));
     final dataState = await _getCategoriesUseCase();
-
     if (dataState is DataSuccess && dataState.data!.isNotEmpty) {
       emit(RemoteCategoriesDone(dataState.data!));
     }

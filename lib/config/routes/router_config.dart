@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workspace/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:workspace/features/auth/presentation/pages/login.dart';
 import 'package:workspace/features/auth/presentation/pages/splashscreen.dart';
+import 'package:workspace/features/dashboard/presentation/pages/main_categories.dart';
+import 'package:workspace/features/notifications/presentation/pages/notification.dart';
 
 enum Routes {
   root("/"),
@@ -14,10 +17,10 @@ enum Routes {
   //Post Login
   dashboard("/dashboard"),
   settings("/settings"),
-
+  notification("/notification"),
   //Auth Page
   login("/auth/signin"),
-  signin("/auth/signup"),
+  signup("/auth/signup"),
   ;
 
   final String path;
@@ -33,12 +36,26 @@ class AppRoutes {
         refreshListenable:
             GoRouterRefreshStream(context.read<AuthBloc>().stream),
         redirect: (context, state) {
+          var authState = context.read<AuthBloc>().state;
 
-          if(true){
-            return Routes.splashScreen.path;
+          if (authState is AuthInitial) {
+            return null;
           }
 
+          final bool userAuthenticated = authState is Authenticated;
 
+          final bool onLoginPage = state.matchedLocation == Routes.login.path ||
+              state.matchedLocation == Routes.signup.path;
+
+          final bool onSplash =
+              state.matchedLocation == Routes.splashScreen.path;
+
+          if (!userAuthenticated && authState is! Loading) {
+            return onLoginPage ? null : Routes.login.path;
+          }
+          if (userAuthenticated) {
+            return onLoginPage || onSplash ? Routes.root.path : null;
+          }
           return null;
         },
         routes: [
@@ -46,7 +63,22 @@ class AppRoutes {
             path: Routes.splashScreen.path,
             name: Routes.splashScreen.name,
             builder: (context, state) => const SplashScreen(),
-          )
+          ),
+          GoRoute(
+            path: Routes.root.path,
+            name: Routes.root.name,
+            builder: (context, state) => const MainCategories(),
+          ),
+          GoRoute(
+            path: Routes.login.path,
+            name: Routes.login.name,
+            builder: (context, state) => const SignInPage(),
+          ),
+          GoRoute(
+            path: Routes.notification.path,
+            name: Routes.notification.name,
+            builder: (context, state) => const NotificationPage(),
+          ),
         ],
       );
 }

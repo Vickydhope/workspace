@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:workspace/config/di/injection.dart';
 import 'package:workspace/config/flavor_config.dart';
 import 'package:workspace/config/routes/router_config.dart';
 import 'package:workspace/core/constants/app_constants.dart';
-import 'package:workspace/features/dashboard/presentation/bloc/remote_category_bloc.dart';
-import 'package:workspace/features/dashboard/presentation/pages/main_categories.dart';
 
 import 'features/auth/presentation/bloc/auth_bloc.dart';
 
@@ -30,17 +27,8 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          lazy: false,
-          create: (context) =>
-              getIt<RemoteCategoryBloc>()..add(GetCategories()),
-        ),
-        BlocProvider(
-          create: (context) => AuthBloc(),
-        ),
-      ],
+    return BlocProvider(
+      create: (context) => AuthBloc(),
       child: Builder(builder: (context) {
         return MaterialApp.router(
           routerConfig: AppRoutes.router(context),
@@ -51,9 +39,22 @@ class _AppState extends State<App> {
               hideSoftKeyboard();
             },
             child: MediaQuery(
-              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-              child: child!,
-            ),
+                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                child: BlocListener<AuthBloc, AuthState>(
+                  listener: (context, state) {
+                    ScaffoldMessenger.of(context).clearSnackBars();
+
+                    if (state is UnAuthenticated) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text("Logged out successfully")));
+                    }
+                    if (state is Authenticated) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text("Logged in successfully")));
+                    }
+                  },
+                  child: child,
+                )),
           ),
         );
       }),
