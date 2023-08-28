@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workspace/config/di/injection.dart';
 import 'package:workspace/config/flavor_config.dart';
 import 'package:workspace/config/routes/router_config.dart';
 import 'package:workspace/core/constants/app_constants.dart';
+import 'package:workspace/core/preferences/shared_preference_service.dart';
 
 import 'features/auth/presentation/bloc/auth_bloc.dart';
 
@@ -15,6 +17,8 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  final router = AppRoutes.router;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
@@ -22,16 +26,18 @@ class _AppState extends State<App> {
         [DeviceOrientation.portraitUp],
       );
     });
+
+    print(getIt<SharedPreferencesService>().darkMode);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AuthBloc(),
+      create: (context) => getIt<AuthBloc>(),
       child: Builder(builder: (context) {
         return MaterialApp.router(
-          routerConfig: AppRoutes.router(context),
+          routerConfig: router,
           debugShowCheckedModeBanner: !FlavorConfig.isProduction(),
           theme: ThemeData(primarySwatch: AppColorConstants().primarySwatch),
           builder: (context, child) => GestureDetector(
@@ -39,22 +45,29 @@ class _AppState extends State<App> {
               hideSoftKeyboard();
             },
             child: MediaQuery(
-                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-                child: BlocListener<AuthBloc, AuthState>(
-                  listener: (context, state) {
-                    ScaffoldMessenger.of(context).clearSnackBars();
+              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              child: BlocListener<AuthBloc, AuthState>(
+                listener: (context, state) {
+                  ScaffoldMessenger.of(context).clearSnackBars();
 
-                    if (state is UnAuthenticated) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text("Logged out successfully")));
-                    }
-                    if (state is Authenticated) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text("Logged in successfully")));
-                    }
-                  },
-                  child: child,
-                )),
+                  if (state is UnAuthenticated) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Logged out successfully"),
+                      ),
+                    );
+                  }
+                  if (state is Authenticated) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Logged in successfully"),
+                      ),
+                    );
+                  }
+                },
+                child: child,
+              ),
+            ),
           ),
         );
       }),

@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:workspace/config/di/injection.dart';
 import 'package:workspace/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workspace/features/auth/presentation/pages/login.dart';
 import 'package:workspace/features/auth/presentation/pages/splashscreen.dart';
@@ -29,12 +30,11 @@ enum Routes {
 }
 
 class AppRoutes {
-  static GoRouter router(BuildContext context) => GoRouter(
+  static GoRouter get router => GoRouter(
         initialLocation: Routes.splashScreen.path,
         routerNeglect: true,
         debugLogDiagnostics: kDebugMode,
-        refreshListenable:
-            GoRouterRefreshStream(context.read<AuthBloc>().stream),
+        refreshListenable: GoRouterRefreshStream(getIt<AuthBloc>().stream),
         redirect: (context, state) {
           var authState = context.read<AuthBloc>().state;
 
@@ -53,6 +53,8 @@ class AppRoutes {
           if (!userAuthenticated && authState is! Loading) {
             return onLoginPage ? null : Routes.login.path;
           }
+
+          ///Allow navigation to root of application only where user is on Splashscreen or Auth (LoginPage/RegistrationPage) Path
           if (userAuthenticated) {
             return onLoginPage || onSplash ? Routes.root.path : null;
           }
