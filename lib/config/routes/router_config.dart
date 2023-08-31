@@ -11,6 +11,8 @@ import 'package:workspace/features/auth/presentation/pages/splashscreen.dart';
 import 'package:workspace/features/dashboard/presentation/pages/main_categories.dart';
 import 'package:workspace/features/notifications/presentation/pages/notification.dart';
 
+import '../../features/news/presentation/pages/news_page.dart';
+
 enum Routes {
   root("/"),
   splashScreen("/splashscreen"),
@@ -22,6 +24,7 @@ enum Routes {
   //Auth Page
   login("/auth/signin"),
   signup("/auth/signup"),
+  news("news/:id/:path"),
   ;
 
   final String path;
@@ -36,13 +39,18 @@ class AppRoutes {
         debugLogDiagnostics: kDebugMode,
         refreshListenable: GoRouterRefreshStream(getIt<AuthBloc>().stream),
         redirect: (context, state) {
+          print(state.matchedLocation);
           var authState = context.read<AuthBloc>().state;
 
-          if (authState is AuthInitial) {
-            return null;
-          }
+
 
           final bool userAuthenticated = authState is Authenticated;
+
+          /*
+          if (authState is AuthInitial) {
+            return null;
+          }*/
+
 
           final bool onLoginPage = state.matchedLocation == Routes.login.path ||
               state.matchedLocation == Routes.signup.path;
@@ -67,10 +75,19 @@ class AppRoutes {
             builder: (context, state) => const SplashScreen(),
           ),
           GoRoute(
-            path: Routes.root.path,
-            name: Routes.root.name,
-            builder: (context, state) => const MainCategories(),
-          ),
+              path: Routes.root.path,
+              name: Routes.root.name,
+              builder: (context, state) => const MainCategories(),
+              routes: [
+                GoRoute(
+                  path: Routes.news.path,
+                  name: Routes.news.name,
+                  builder: (context, state) => NewsPage(
+                    userId: state.pathParameters["id"].toString(),
+                    path: state.pathParameters["path"].toString(),
+                  ),
+                ),
+              ]),
           GoRoute(
             path: Routes.login.path,
             name: Routes.login.name,
