@@ -5,6 +5,12 @@ PODS:
   - AppAuth/Core (1.6.2)
   - AppAuth/ExternalUserAgent (1.6.2):
     - AppAuth/Core
+  - Auth0 (2.3.2):
+    - JWTDecode (~> 3.0)
+    - SimpleKeychain (~> 1.0)
+  - auth0_flutter (1.2.1):
+    - Auth0 (~> 2.3)
+    - Flutter
   - Firebase/Auth (10.12.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 10.12.0)
@@ -60,6 +66,7 @@ PODS:
     - AppAuth/Core (~> 1.6)
     - GTMSessionFetcher/Core (< 3.0, >= 1.5)
   - GTMSessionFetcher/Core (2.3.0)
+  - JWTDecode (3.0.1)
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -67,11 +74,13 @@ PODS:
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - SimpleKeychain (1.0.1)
   - sqflite (0.0.3):
     - Flutter
     - FMDB (>= 2.7.5)
 
 DEPENDENCIES:
+  - auth0_flutter (from `.symlinks/plugins/auth0_flutter/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
@@ -83,6 +92,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - AppAuth
+    - Auth0
     - Firebase
     - FirebaseAppCheckInterop
     - FirebaseAuth
@@ -93,9 +103,13 @@ SPEC REPOS:
     - GoogleUtilities
     - GTMAppAuth
     - GTMSessionFetcher
+    - JWTDecode
     - PromisesObjC
+    - SimpleKeychain
 
 EXTERNAL SOURCES:
+  auth0_flutter:
+    :path: ".symlinks/plugins/auth0_flutter/ios"
   firebase_auth:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
@@ -113,6 +127,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
+  Auth0: 64da28fdc5cd499aa516dc4bfd0ace8efae2c1da
+  auth0_flutter: ce053409c0a080736e341c3b94084c96cc8d4136
   Firebase: 07150e75d142fb9399f6777fa56a187b17f833a0
   firebase_auth: 95f4a6acafa6a7a0d902aa467dd4d7ca336ee4be
   firebase_core: 4a3246a02f828a01c74a2c26427037786d90f17f
@@ -127,11 +143,13 @@ SPEC CHECKSUMS:
   GoogleUtilities: 13e2c67ede716b8741c7989e26893d151b2b2084
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
   GTMSessionFetcher: 3a63d75eecd6aa32c2fc79f578064e1214dfdec2
+  JWTDecode: 2eed97c2fa46ccaf3049a787004eedf0be474a87
   path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
+  SimpleKeychain: 130211269f88f038d7dc5254cf0b1b9ce978c398
   sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
 
-PODFILE CHECKSUM: 70d9d25280d0dd177a5f637cdb0f0b0b12c6a189
+PODFILE CHECKSUM: 7be2f5f74864d463a8ad433546ed1de7e0f29aef
 
 COCOAPODS: 1.11.3

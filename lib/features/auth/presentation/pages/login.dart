@@ -1,8 +1,15 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workspace/core/data/model/drop_down_data.dart';
 import 'package:workspace/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workspace/features/auth/presentation/components/google_sign_in_button.dart';
+
+import '../../../../core/services/auth0/connections/sign_in_with_google.dart';
+
+var android = "";
+var ios =
+    "com.doops.workspace://doops178.eu.auth0.com/ios/com.doops.workspace.stg/callback";
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -47,6 +54,34 @@ class _SignInPageState extends State<SignInPage> {
                 context.read<AuthBloc>().add(Logout());
               },
               child: const Text("UnAuthenticate"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  SignInWithGoogle signInWithGoogle = SignInWithGoogle();
+                  final credentials = await signInWithGoogle.signIn();
+                  print(credentials.user.email);
+                } catch (e) {
+                  if (kDebugMode) {
+                    print(e);
+                  }
+                }
+              },
+              child: const Text("Google"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  SignInWithGoogle signInWithGoogle = SignInWithGoogle();
+                  await signInWithGoogle.signOut();
+                  if (mounted) context.read<AuthBloc>().add(Logout());
+                } catch (e) {
+                  if (kDebugMode) {
+                    print(e);
+                  }
+                }
+              },
+              child: const Text("Google"),
             ),
             GoogleSignInButton(),
             MyDropDownButton(
