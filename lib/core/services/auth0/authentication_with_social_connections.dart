@@ -14,6 +14,11 @@ enum SocialConnection {
 
 class AuthenticationWithSocialConnections
     extends AuthenticationService<Credentials> {
+  AuthenticationWithSocialConnections({
+    required String auth0DomainId,
+    required String auth0ClientId,
+  }) : super(auth0ClientId, auth0DomainId);
+
   SocialConnection get connection {
     throw UnimplementedError('connection getter must be implemented');
   }
@@ -23,13 +28,29 @@ class AuthenticationWithSocialConnections
     try {
       Credentials response =
           await auth0.webAuthentication(scheme: 'demo').login(
-        parameters: {
+       /* parameters: {
           'connection': connection.getName,
-        },
+        },*/
       );
-      if (kDebugMode) {
-        print(response.accessToken);
+      return response;
+    } on WebAuthenticationException catch (e) {
+      if (!kReleaseMode) {
+        debugPrint(e.runtimeType.toString());
       }
+      rethrow;
+    }
+  }
+
+
+  @override
+  Future<Credentials> getCredentials() async {
+    try {
+      Credentials response =
+          await auth0.webAuthentication(scheme: 'demo').login(
+       /* parameters: {
+          'connection': connection.getName,
+        },*/
+      );
       return response;
     } on WebAuthenticationException catch (e) {
       if (!kReleaseMode) {
@@ -41,8 +62,6 @@ class AuthenticationWithSocialConnections
 
   @override
   Future<void> signOut() async {
-    await auth0
-        .webAuthentication(scheme: 'demo')
-        .logout(returnTo: "https://doops178.us.auth0.com/v2/logout?federated");
+    await auth0.webAuthentication(scheme: 'demo').logout();
   }
 }

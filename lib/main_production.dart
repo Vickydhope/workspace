@@ -8,6 +8,8 @@ import 'app.dart';
 import 'config/di/injection.dart';
 
 void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
   final baseUrlConfig = BaseUrlConfig();
 
   FlavorConfig(
@@ -18,7 +20,8 @@ void main() async {
     ),
   );
 
-  WidgetsFlutterBinding.ensureInitialized();
-  await configureDependencies();
+  await configureDependencies(environment: production);
+
+
   runApp(const App());
 }

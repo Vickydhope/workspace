@@ -8,6 +8,9 @@ import 'package:workspace/config/di/injection.dart';
 import 'app.dart';
 
 void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+
   final baseUrlConfig = BaseUrlConfig();
   FlavorConfig(
     flavor: Flavor.development,
@@ -16,7 +19,6 @@ void main() async {
       baseUrlNewsEndpoint: baseUrlConfig.baseUrlDevelopment + baseUrlConfig.prefixEndpointV2,
     ),
   );
-  WidgetsFlutterBinding.ensureInitialized();
-  await configureDependencies();
+  await configureDependencies(environment: development);
   runApp(const App());
 }

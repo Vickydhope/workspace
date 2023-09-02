@@ -8,18 +8,19 @@ import 'app.dart';
 import 'config/di/injection.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   final baseUrlConfig = BaseUrlConfig();
 
   FlavorConfig(
     flavor: Flavor.staging,
-    colorPrimary: Colors.deepOrange,
+    colorPrimary: Colors.green,
     values: FlavorValues(
       baseUrlNewsEndpoint:
-          baseUrlConfig.baseUrlStaging + baseUrlConfig.prefixEndpointV2,
+          baseUrlConfig.baseUrlProduction + baseUrlConfig.prefixEndpointV2,
     ),
   );
 
-  WidgetsFlutterBinding.ensureInitialized();
-  await configureDependencies();
+  await configureDependencies(environment: staging);
+
   runApp(const App());
 }

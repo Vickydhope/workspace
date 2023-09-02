@@ -1,7 +1,12 @@
+import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workspace/config/di/injection.dart';
 import 'package:workspace/core/data/model/drop_down_data.dart';
+import 'package:workspace/core/services/auth0/authentication_with_social_connections.dart';
+import 'package:workspace/core/services/auth0/connections/sign_in_with_apple.dart';
+import 'package:workspace/core/utils/app_sizes.dart';
 import 'package:workspace/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workspace/features/auth/presentation/components/google_sign_in_button.dart';
 
@@ -58,22 +63,25 @@ class _SignInPageState extends State<SignInPage> {
             ElevatedButton(
               onPressed: () async {
                 try {
-                  SignInWithGoogle signInWithGoogle = SignInWithGoogle();
+                  var signInWithGoogle =
+                      getIt<AuthenticationWithSocialConnections>();
                   final credentials = await signInWithGoogle.signIn();
-                  print(credentials.user.email);
+                  print(credentials.idToken);
                 } catch (e) {
                   if (kDebugMode) {
                     print(e);
                   }
                 }
               },
-              child: const Text("Google"),
+              child: const Text("Auth0 Sign In"),
             ),
+            8.toGapH,
             ElevatedButton(
               onPressed: () async {
                 try {
-                  SignInWithGoogle signInWithGoogle = SignInWithGoogle();
-                  await signInWithGoogle.signOut();
+                  var signInWithApple =
+                      getIt<AuthenticationWithSocialConnections>();
+                  await signInWithApple.signOut();
                   if (mounted) context.read<AuthBloc>().add(Logout());
                 } catch (e) {
                   if (kDebugMode) {
@@ -81,7 +89,7 @@ class _SignInPageState extends State<SignInPage> {
                   }
                 }
               },
-              child: const Text("Google"),
+              child: const Text("Logout Auth0"),
             ),
             GoogleSignInButton(),
             MyDropDownButton(
