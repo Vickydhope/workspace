@@ -4,17 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workspace/config/di/injection.dart';
 import 'package:workspace/core/data/model/drop_down_data.dart';
-import 'package:workspace/core/services/auth0/authentication_with_social_connections.dart';
-import 'package:workspace/core/services/auth0/connections/sign_in_with_apple.dart';
+import 'package:workspace/core/services/auth0/authentication_service.dart';
 import 'package:workspace/core/utils/app_sizes.dart';
 import 'package:workspace/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workspace/features/auth/presentation/components/google_sign_in_button.dart';
-
-import '../../../../core/services/auth0/connections/sign_in_with_google.dart';
-
-var android = "";
-var ios =
-    "com.doops.workspace://doops178.eu.auth0.com/ios/com.doops.workspace.stg/callback";
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -64,7 +57,7 @@ class _SignInPageState extends State<SignInPage> {
               onPressed: () async {
                 try {
                   var signInWithGoogle =
-                      getIt<AuthenticationWithSocialConnections>();
+                      getIt<AuthenticationService<Credentials>>();
                   final credentials = await signInWithGoogle.signIn();
                   print(credentials.idToken);
                 } catch (e) {
@@ -80,7 +73,7 @@ class _SignInPageState extends State<SignInPage> {
               onPressed: () async {
                 try {
                   var signInWithApple =
-                      getIt<AuthenticationWithSocialConnections>();
+                      getIt<AuthenticationService<Credentials>>();
                   await signInWithApple.signOut();
                   if (mounted) context.read<AuthBloc>().add(Logout());
                 } catch (e) {

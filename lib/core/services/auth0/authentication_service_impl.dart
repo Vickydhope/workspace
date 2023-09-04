@@ -1,5 +1,7 @@
 import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:flutter/foundation.dart';
+import 'package:injectable/injectable.dart';
+import 'package:workspace/core/services/auth0/credentials/auth_credentials.dart';
 
 import 'authentication_service.dart';
 
@@ -12,12 +14,11 @@ enum SocialConnection {
   const SocialConnection(this.getName);
 }
 
-class AuthenticationWithSocialConnections
-    extends AuthenticationService<Credentials> {
-  AuthenticationWithSocialConnections({
-    required String auth0DomainId,
-    required String auth0ClientId,
-  }) : super(auth0ClientId, auth0DomainId);
+@Injectable(as: AuthenticationService<Credentials>)
+@singleton
+class AuthenticationServiceImpl extends AuthenticationService<Credentials> {
+  AuthenticationServiceImpl(AuthCredentials authCredentials)
+      : super(authCredentials.auth0ClientId, authCredentials.auth0DomainId);
 
   SocialConnection get connection {
     throw UnimplementedError('connection getter must be implemented');
@@ -27,11 +28,7 @@ class AuthenticationWithSocialConnections
   Future<Credentials> signIn() async {
     try {
       Credentials response =
-          await auth0.webAuthentication(scheme: 'demo').login(
-       /* parameters: {
-          'connection': connection.getName,
-        },*/
-      );
+          await auth0.webAuthentication(scheme: 'demo').login();
       return response;
     } on WebAuthenticationException catch (e) {
       if (!kReleaseMode) {
@@ -41,16 +38,11 @@ class AuthenticationWithSocialConnections
     }
   }
 
-
   @override
   Future<Credentials> getCredentials() async {
     try {
       Credentials response =
-          await auth0.webAuthentication(scheme: 'demo').login(
-       /* parameters: {
-          'connection': connection.getName,
-        },*/
-      );
+          await auth0.webAuthentication(scheme: 'demo').login();
       return response;
     } on WebAuthenticationException catch (e) {
       if (!kReleaseMode) {

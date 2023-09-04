@@ -51,6 +51,78 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:572279728838:android:eefde571d20a68120185c7",
+        "android_client_info": {
+          "package_name": "com.doops.workspace.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "572279728838-dcl9499683qkg1t4jaji4jognf3vg2c4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDe2i10cfgIdCI-L8BTUtyWj1B8P3CJo7k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "572279728838-35o4f4qn7qhu00k2n0qnqqksf1aii9ks.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "572279728838-2kchbp960scn16fr8gk70ojl1ua1814q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.doops.workspace"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:572279728838:android:9e679893ef2359d00185c7",
+        "android_client_info": {
+          "package_name": "com.doops.workspace.stg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "572279728838-dcl9499683qkg1t4jaji4jognf3vg2c4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDe2i10cfgIdCI-L8BTUtyWj1B8P3CJo7k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "572279728838-35o4f4qn7qhu00k2n0qnqqksf1aii9ks.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "572279728838-2kchbp960scn16fr8gk70ojl1ua1814q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.doops.workspace"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:572279728838:android:ba50726935befed70185c7",
         "android_client_info": {
           "package_name": "com.example.firebase_demo"

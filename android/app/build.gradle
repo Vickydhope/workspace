@@ -55,7 +55,6 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        manifestPlaceholders += [auth0Domain: "@string/com_auth0_domain", auth0Scheme: "@string/com_auth0_scheme"]
 
     }
 
@@ -65,17 +64,17 @@ android {
         production {
             dimension "default"
             applicationIdSuffix ""
-            manifestPlaceholders = [appName: "My Test App Flavors"]
+            manifestPlaceholders += [appName: "Workspace Flavors", auth0Domain: "@string/com_auth0_domain_prod", auth0Scheme: "@string/com_auth0_scheme"]
         }
         staging {
             dimension "default"
             applicationIdSuffix ".stg"
-            manifestPlaceholders = [appName: "[STG] My Test App Flavors"]
+            manifestPlaceholders += [appName: "[STG] Workspace", auth0Domain: "@string/com_auth0_domain_stg", auth0Scheme: "@string/com_auth0_scheme"]
         }
         development {
             dimension "default"
             applicationIdSuffix ".dev"
-            manifestPlaceholders = [appName: "[DEV] My Test App Flavors"]
+            manifestPlaceholders += [appName: "[DEV] Workspace", auth0Domain: "@string/com_auth0_domain", auth0Scheme: "@string/com_auth0_scheme"]
         }
     }
 

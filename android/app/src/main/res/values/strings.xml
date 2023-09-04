@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="com_auth0_domain">doops178.us.auth0.com</string>
     <string name="com_auth0_scheme">demo</string>
+    <string name="com_auth0_domain">doops178.us.auth0.com</string>
+    <string name="com_auth0_domain_prod">doops178-prod.us.auth0.com</string>
+    <string name="com_auth0_domain_stg">doops178-stg.us.auth0.com</string>
 </resources>
