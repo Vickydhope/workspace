@@ -20,6 +20,7 @@ abstract class AppModule {
         requestHeader: true,
         responseHeader: true,
         requestBody: true,
+
         responseBody: true,
         request: true,
         error: true,
