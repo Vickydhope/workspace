@@ -27,8 +27,9 @@ class AuthenticationServiceImpl extends AuthenticationService<Credentials> {
   @override
   Future<Credentials> signIn() async {
     try {
-      Credentials response =
-          await auth0.webAuthentication(scheme: 'demo').login();
+      Credentials response = await auth0
+          .webAuthentication(scheme: 'demo')
+          .login(useEphemeralSession: true);
       return response;
     } on WebAuthenticationException catch (e) {
       if (!kReleaseMode) {
@@ -43,6 +44,10 @@ class AuthenticationServiceImpl extends AuthenticationService<Credentials> {
     try {
       Credentials response =
           await auth0.webAuthentication(scheme: 'demo').login();
+
+      final UserProfile userProfile = response.user;
+      print(response);
+
       return response;
     } on WebAuthenticationException catch (e) {
       if (!kReleaseMode) {

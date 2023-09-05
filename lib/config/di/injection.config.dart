@@ -10,29 +10,29 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auth0_flutter/auth0_flutter.dart' as _i6;
-import 'package:dio/dio.dart' as _i12;
-import 'package:firebase_auth/firebase_auth.dart' as _i14;
+import 'package:dio/dio.dart' as _i9;
+import 'package:firebase_auth/firebase_auth.dart' as _i11;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
-import 'package:shared_preferences/shared_preferences.dart' as _i17;
+import 'package:shared_preferences/shared_preferences.dart' as _i12;
 
-import '../../core/preferences/shared_preference_service.dart' as _i18;
+import '../../core/preferences/shared_preference_service.dart' as _i13;
 import '../../core/services/auth0/authentication_service.dart' as _i5;
 import '../../core/services/auth0/authentication_service_impl.dart' as _i7;
 import '../../core/services/auth0/credentials/auth_credentials.dart' as _i4;
-import '../../features/auth/data/datasource/firebase_auth_service.dart' as _i13;
-import '../../features/auth/data/repository/auth_repository_impl.dart' as _i20;
-import '../../features/auth/domain/repository/auth_repository.dart' as _i19;
+import '../../features/auth/data/datasource/firebase_auth_service.dart' as _i10;
+import '../../features/auth/data/repository/auth_repository_impl.dart' as _i15;
+import '../../features/auth/domain/repository/auth_repository.dart' as _i14;
 import '../../features/auth/presentation/bloc/auth_bloc.dart' as _i3;
 import '../../features/dashboard/data/data_sources/network/category_api_service.dart'
-    as _i9;
-import '../../features/dashboard/data/repository/category_repository_impl.dart'
-    as _i11;
-import '../../features/dashboard/domain/repository/category_repository.dart'
-    as _i10;
-import '../../features/dashboard/domain/use_cases/get_categories.dart' as _i15;
-import '../../features/dashboard/presentation/bloc/remote_category_bloc.dart'
     as _i16;
+import '../../features/dashboard/data/repository/category_repository_impl.dart'
+    as _i18;
+import '../../features/dashboard/domain/repository/category_repository.dart'
+    as _i17;
+import '../../features/dashboard/domain/use_cases/get_categories.dart' as _i19;
+import '../../features/dashboard/presentation/bloc/remote_category_bloc.dart'
+    as _i20;
 import '../base_url_config.dart' as _i8;
 import 'app_module.dart' as _i21;
 
@@ -68,30 +68,30 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i5.AuthenticationService<_i6.Credentials>>(
         () => _i7.AuthenticationServiceImpl(gh<_i4.AuthCredentials>()));
     gh.factory<_i8.BaseUrlConfig>(() => _i8.BaseUrlConfig());
-    await gh.factoryAsync<_i9.CategoryApiService>(
-      () => appModule.categoryApiService,
-      preResolve: true,
-    );
-    gh.factory<_i10.CategoryRepository>(
-        () => _i11.CategoryRepositoryImpl(gh<_i9.CategoryApiService>()));
-    await gh.factoryAsync<_i12.Dio>(
+    await gh.factoryAsync<_i9.Dio>(
       () => appModule.dio,
       preResolve: true,
     );
-    gh.factory<_i13.FirebaseAuthService<_i14.User?>>(
-        () => _i13.FirebaseAuthServiceImpl());
-    gh.factory<_i15.GetCategoriesUseCase>(
-        () => _i15.GetCategoriesUseCase(gh<_i10.CategoryRepository>()));
-    gh.factory<_i16.RemoteCategoryBloc>(
-        () => _i16.RemoteCategoryBloc(gh<_i15.GetCategoriesUseCase>()));
-    await gh.singletonAsync<_i17.SharedPreferences>(
+    gh.factory<_i10.FirebaseAuthService<_i11.User?>>(
+        () => _i10.FirebaseAuthServiceImpl());
+    await gh.singletonAsync<_i12.SharedPreferences>(
       () => appModule.sharedPreferences(),
       preResolve: true,
     );
-    gh.factory<_i18.SharedPreferencesService>(
-        () => _i18.SharedPreferencesService(gh<_i17.SharedPreferences>()));
-    gh.factory<_i19.AuthRepository>(() =>
-        _i20.AuthRepositoryImpl(gh<_i13.FirebaseAuthService<_i14.User?>>()));
+    gh.factory<_i13.SharedPreferencesService>(
+        () => _i13.SharedPreferencesService(gh<_i12.SharedPreferences>()));
+    gh.factory<_i14.AuthRepository>(() =>
+        _i15.AuthRepositoryImpl(gh<_i10.FirebaseAuthService<_i11.User?>>()));
+    await gh.factoryAsync<_i16.CategoryApiService>(
+      () => appModule.categoryApiService(gh<_i9.Dio>()),
+      preResolve: true,
+    );
+    gh.factory<_i17.CategoryRepository>(
+        () => _i18.CategoryRepositoryImpl(gh<_i16.CategoryApiService>()));
+    gh.factory<_i19.GetCategoriesUseCase>(
+        () => _i19.GetCategoriesUseCase(gh<_i17.CategoryRepository>()));
+    gh.factory<_i20.RemoteCategoryBloc>(
+        () => _i20.RemoteCategoryBloc(gh<_i19.GetCategoriesUseCase>()));
     return this;
   }
 }
