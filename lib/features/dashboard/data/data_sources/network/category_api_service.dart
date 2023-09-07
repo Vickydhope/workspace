@@ -6,8 +6,10 @@ import 'package:workspace/features/dashboard/data/model/category.dart';
 
 part 'category_api_service.g.dart';
 
+@injectable
 @RestApi()
 abstract class CategoryApiService {
+  @factoryMethod
   factory CategoryApiService({required Dio dio}) => _CategoryApiService(dio);
 
   @GET(BaseUrlConfig.endpointCategories)

@@ -7,7 +7,7 @@ import 'package:workspace/features/dashboard/data/model/category.dart';
 import 'package:workspace/features/dashboard/domain/repository/category_repository.dart';
 import 'package:dio/dio.dart';
 
-@Injectable(as: CategoryRepository)
+@Singleton(as: CategoryRepository)
 class CategoryRepositoryImpl implements CategoryRepository {
   final CategoryApiService _categoryApiService;
 
