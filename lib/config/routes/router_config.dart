@@ -5,12 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workspace/config/di/injection.dart';
-import 'package:workspace/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:workspace/features/auth/presentation/pages/login.dart';
-import 'package:workspace/features/auth/presentation/pages/splashscreen.dart';
 import 'package:workspace/features/dashboard/presentation/pages/main_categories.dart';
 import 'package:workspace/features/notifications/presentation/pages/notification.dart';
-
+import 'package:workspace/features/auth/auth.dart';
 import '../../features/news/presentation/pages/news_page.dart';
 
 enum Routes {
@@ -42,15 +39,12 @@ class AppRoutes {
           print(state.matchedLocation);
           var authState = context.read<AuthBloc>().state;
 
-
-
           final bool userAuthenticated = authState is Authenticated;
 
           /*
           if (authState is AuthInitial) {
             return null;
           }*/
-
 
           final bool onLoginPage = state.matchedLocation == Routes.login.path ||
               state.matchedLocation == Routes.signup.path;

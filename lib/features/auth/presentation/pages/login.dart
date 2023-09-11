@@ -8,7 +8,6 @@ import 'package:workspace/core/services/auth0/authentication_service.dart';
 import 'package:workspace/core/utils/app_sizes.dart';
 import 'package:workspace/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workspace/features/auth/presentation/components/google_sign_in_button.dart';
-
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
 
